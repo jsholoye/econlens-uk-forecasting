@@ -1,0 +1,9 @@
+series_code,label,residual_observations,ljung_box_lag,ljung_box_p_value,jarque_bera_statistic,jarque_bera_p_value,residual_autocorrelation_assessment
+LPMAUYN,M4 / monetary aggregate,59,10,0.9973280979886584,6962.470432993911,0.0,no significant autocorrelation detected
+IUDBEDR,Official Bank Rate,1444,10,0.9999999557416199,1131841.2338656676,0.0,no significant autocorrelation detected
+IUDSOIA,SONIA,1443,10,0.9999999261408201,1136591.7011174585,0.0,no significant autocorrelation detected
+IUMBV34,2-year fixed mortgage rate,60,10,0.19398442151964243,164.29370651569232,2.1089919614412762e-36,no significant autocorrelation detected
+IUMBV42,5-year fixed mortgage rate,60,10,0.05389533868607826,114.56571570164792,1.3254731287823348e-25,no significant autocorrelation detected
+LPMVZRI,Consumer credit,46,9,0.5215879859914841,2.069581086456655,0.3553007932887277,no significant autocorrelation detected
+XUDLUSS,GBP/USD,1444,10,0.23032095022419943,466.83865179661404,4.239111040851806e-102,no significant autocorrelation detected
+XUDLERS,GBP/EUR,1444,10,0.0,1.8363371899932917,0.39924955958372293,remaining autocorrelation detected

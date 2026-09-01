@@ -1,0 +1,9 @@
+series_code,label,frequency,selected_model,holdout_RMSE,holdout_sMAPE_pct,latest_observation,forecast_horizon,forecast_endpoint,forecast_change_pct,residual_assessment
+LPMAUYN,M4 / monetary aggregate,monthly,"SARIMA(1, 1, 1)×(0, 1, 1, 12)",18135.07083250665,0.44972117189447264,3278498.0,12,3365192.5570305935,2.6443376518940465,no significant autocorrelation detected
+IUDBEDR,Official Bank Rate,business daily,"SARIMA(0, 1, 0)×(0, 0, 0, 0)",0.0,0.0,3.75,30,3.75,0.0,no significant autocorrelation detected
+IUDSOIA,SONIA,business daily,"SARIMA(0, 1, 1)×(0, 0, 0, 0)",0.0009361218474009229,0.02127874748895222,3.7303,30,3.730300255597401,6.851926137585451e-06,no significant autocorrelation detected
+IUMBV34,2-year fixed mortgage rate,monthly,"SARIMA(1, 1, 0)×(1, 0, 0, 12)",0.3908674767512646,7.68644624261881,4.81,12,4.7302183653318775,-1.6586618434121014,no significant autocorrelation detected
+IUMBV42,5-year fixed mortgage rate,monthly,Holt damped trend,0.3294980379841641,6.378137436843186,4.65,12,4.58805567858831,-1.3321359443374314,no significant autocorrelation detected
+LPMVZRI,Consumer credit,monthly,Seasonal ETS (m=12),1689.2771146108223,0.28474315751985607,530094.0,12,573133.7045674471,8.11925895547716,no significant autocorrelation detected
+XUDLUSS,GBP/USD,business daily,"SARIMA(1, 1, 1)×(0, 0, 0, 0)",0.009109207777268175,0.6040227765140652,1.332,30,1.3331479326348599,0.08618112874323458,no significant autocorrelation detected
+XUDLERS,GBP/EUR,business daily,"SARIMA(0, 0, 2)×(0, 0, 0, 0)",0.007575240788589891,0.5858371301747439,1.1713,30,1.165999963217766,-0.4524918280742751,remaining autocorrelation detected
