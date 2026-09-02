@@ -1,25 +1,26 @@
 # EconLens: UK Economic Time-Series Forecasting
 
-EconLens compares baseline, exponential-smoothing and SARIMA forecasts across eight Bank of England time series. It demonstrates chronological evaluation, transparent candidate comparison, forecast uncertainty and residual diagnostics.
+I built EconLens to compare several forecasting methods across eight Bank of England time series. The data covers interest rates, mortgage rates, exchange rates, money supply and consumer credit.
 
-The project uses the same source series as UK Economic Data Pipeline & Analytics but answers a different question: the pipeline project focuses on preparing and exploring data; EconLens focuses on statistical forecasting.
+The companion [UK Economic Data Pipeline](https://github.com/jsholoye/uk-economic-data-pipeline) project is about getting the data clean and usable. This project starts from the same extracts and focuses on forecasting them.
 
-![Selected models and chronological holdout results](images/model_comparison.png)
+![Selected models and holdout results](images/model_comparison.png)
 
-## Forecasting workflow
+## What the notebook does
 
-`native-frequency preparation → chronological split → training-only ADF check → baseline/model fitting → holdout comparison → selected-model refit → forecasts → residual diagnostics`
+- Loads and checks eight Bank of England CSV files.
+- Keeps monthly and business-daily series at their own frequencies.
+- Holds back the final 12 months or 30 business days for comparison.
+- Runs an ADF test on the training data to guide differencing.
+- Compares naïve, seasonal-naïve and drift benchmarks with Holt, seasonal ETS and a small SARIMA grid.
+- Ranks the candidates by RMSE, followed by MAE and sMAPE.
+- Refits the selected model on the full series and produces forecasts and intervals.
+- Saves the comparison tables, forecasts and residual checks as CSV files.
 
-## Models and metrics
+## Data
 
-Candidates include naïve, seasonal-naïve, drift, damped Holt, seasonal ETS and a deliberately limited SARIMA grid. Models are ranked by RMSE, then MAE and sMAPE on one chronological model-selection holdout.
-
-This is not an untouched final test set: the holdout is used to choose the winning model. Reported values therefore compare candidates on that period and are not unbiased guarantees of future performance.
-
-## Dataset
-
-| Code | Indicator | Frequency used | Horizon |
-|---|---|---:|---:|
+| Code | Indicator | Frequency used | Forecast horizon |
+|---|---|---|---|
 | LPMAUYN | M4 / monetary aggregate | Monthly | 12 months |
 | IUDBEDR | Official Bank Rate | Business daily | 30 business days |
 | IUDSOIA | SONIA | Business daily | 30 business days |
@@ -29,42 +30,44 @@ This is not an untouched final test set: the holdout is used to choose the winni
 | XUDLUSS | GBP/USD | Business daily | 30 business days |
 | XUDLERS | GBP/EUR | Business daily | 30 business days |
 
-## Interpretation
-
-- ADF testing guides non-seasonal differencing but is not proof that every model assumption holds.
-- The candidate grid is intentionally small and interpretable rather than exhaustive.
-- SARIMA intervals are model-derived; other model families use approximate residual-based prediction bands.
-- Ljung–Box non-rejection means autocorrelation was not detected at the tested lag, not that residuals are proven independent.
-- The Bank Rate's saved zero holdout error occurs because the 30-day holdout was unchanged; it does not show that policy decisions are predictable.
-- The saved GBP/EUR result retains significant residual autocorrelation and should be treated cautiously.
-- Monthly models have relatively short histories, especially consumer credit.
-
-## Query interface
-
-The optional `ask_econlens` helper is deterministic keyword and regular-expression routing. It selects an existing series and forecast horizon and formats stored model output. It is not an LLM, semantic assistant or causal economic model.
+The saved run selected a mix of SARIMA, Holt and seasonal ETS models, so no single method performed best for every series. The Bank Rate result needs context: its holdout error is zero because the rate did not change during that period, not because policy decisions are easy to predict.
 
 ## Repository structure
 
 ```text
-notebooks/  Main forecasting notebook
-data/raw/   Bank of England CSV inputs
-outputs/    Generated leaderboards, diagnostics and forecasts
-images/     Selected portfolio screenshots after the final run
+data/raw/    Bank of England CSV inputs
+images/      Four selected project visuals
+notebooks/   Main forecasting notebook
+outputs/     Model comparisons, diagnostics and forecasts
 ```
+
+## Run in Google Colab
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jsholoye/econlens-uk-forecasting/blob/main/notebooks/econlens_forecasting.ipynb)
+
+Open the notebook, connect to a runtime and run this once in a temporary cell:
+
+```python
+!git clone https://github.com/jsholoye/econlens-uk-forecasting.git
+```
+
+You can then use **Runtime → Run all**. The notebook will find the cloned project folder and use the included data files.
 
 ## Run locally
 
-1. Create and activate a Python 3.11 or 3.12 environment.
-2. Install dependencies with `pip install -r requirements.txt`.
-3. Confirm that the eight included CSV files are present in `data/raw/`.
-4. Start Jupyter from the repository root.
-5. Restart the kernel and run the notebook from top to bottom.
-6. Inspect fitting warnings and candidate statuses before publishing outputs. The run regenerates the result tables and portfolio images.
+```bash
+git clone https://github.com/jsholoye/econlens-uk-forecasting.git
+cd econlens-uk-forecasting
+pip install -r requirements.txt
+jupyter lab
+```
+
+Open `notebooks/econlens_forecasting.ipynb` and run it from top to bottom.
 
 ## Limitations
 
-- One chronological holdout is weaker than rolling-origin evaluation.
-- The holdout is used for both model selection and reported comparison metrics.
-- Candidate orders are manually constrained and do not constitute exhaustive tuning.
-- Business-day indexes do not encode every UK market or bank holiday.
-- Statistical forecasts do not model policy decisions, causal mechanisms or unexpected shocks.
+- The same chronological holdout is used to select a model and report its comparison metrics. A separate test period or rolling-origin evaluation would give a stronger assessment.
+- SARIMA intervals come from the fitted model; intervals for the other model families are approximate residual-based bands.
+- Some monthly series have fairly short histories.
+- The business-day index does not account for every UK market or bank holiday.
+- These are statistical forecasts, so they do not account for policy announcements or unexpected economic shocks.
